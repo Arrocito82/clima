@@ -1,4 +1,10 @@
+import '../services/location.dart';
+import '../services/networking.dart';
+
 class Weather {
+  static const kAppId = 'ab0550e03a70ca808a6c5df74e22b7b1';
+  static const kWeatherURL = 'https://api.openweathermap.org/data/2.5/weather';
+  static Location location = Location();
   final int condition;
   final double temp;
   final String name;
@@ -13,7 +19,16 @@ class Weather {
       condition: json['weather'][0]['id'],
     );
   }
-  String getTemperature()=>temp.toStringAsFixed(1);
+  static Future<Weather> getLocationWeather() async {
+    await location.getCurrentLocation();
+    dynamic weatherData = await NetworkHelper.fetch(
+        url:
+            '$kWeatherURL?lat=${location.latitude}&lon=${location.longitude}&appid=$kAppId&units=metric');
+    Weather weather = Weather.fromJson(weatherData);
+    return weather;
+  }
+
+  String getTemperature() => temp.toStringAsFixed(1);
   String getWeatherIcon() {
     if (condition < 300) {
       return '🌩';
@@ -36,15 +51,13 @@ class Weather {
 
   String getMessage() {
     if (temp > 25) {
-      return 'It\'s 🍦 time';
+      return 'It\'s 🍦 time in $name';
     } else if (temp > 20) {
-      return 'Time for shorts and 👕';
+      return 'Time for shorts and 👕 in $name';
     } else if (temp < 10) {
-      return 'You\'ll need 🧣 and 🧤';
+      return 'You\'ll need 🧣 and 🧤 in $name';
     } else {
-      return 'Bring a 🧥 just in case';
+      return 'Bring a 🧥 just in case in $name';
     }
   }
-
-  String getName() => this.name;
 }
