@@ -14,16 +14,9 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
-  late Location location;
   final appId = 'ab0550e03a70ca808a6c5df74e22b7b1';
-  void getLocation() async {
-    location = Location();
-    await location.getCurrentLocation();
-    weather = await NetworkHelper.fetch(
-        url:
-            'https://api.openweathermap.org/data/2.5/weather?lat=${location.latitude}&lon=${location.longitude}&appid=$appId&units=metric');
-    showWeather();
-  }
+  late Location location;
+  late Weather weather;
 
   void showWeather() {
     Navigator.push(
@@ -35,7 +28,14 @@ class _LoadingScreenState extends State<LoadingScreen> {
                 icon: weather.getWeatherIcon())));
   }
 
-  late Weather weather;
+  void getLocation() async {
+    location = Location();
+    await location.getCurrentLocation();
+    weather = await NetworkHelper.fetch(
+        url:
+            'https://api.openweathermap.org/data/2.5/weather?lat=${location.latitude}&lon=${location.longitude}&appid=$appId&units=metric');
+    showWeather();
+  }
 
   @override
   void initState() {
