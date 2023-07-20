@@ -1,5 +1,20 @@
-class WeatherModel {
-  String getWeatherIcon(int condition) {
+class Weather {
+  final int condition;
+  final double temp;
+  final String name;
+
+  const Weather(
+      {required this.condition, required this.temp, required this.name});
+
+  factory Weather.fromJson(Map<String, dynamic> json) {
+    return Weather(
+      name: json['name'],
+      temp: json['main']['temp'],
+      condition: json['weather'][0]['id'],
+    );
+  }
+  String getTemperature()=>temp.toStringAsFixed(1);
+  String getWeatherIcon() {
     if (condition < 300) {
       return '🌩';
     } else if (condition < 400) {
@@ -19,7 +34,7 @@ class WeatherModel {
     }
   }
 
-  String getMessage(int temp) {
+  String getMessage() {
     if (temp > 25) {
       return 'It\'s 🍦 time';
     } else if (temp > 20) {
@@ -30,4 +45,6 @@ class WeatherModel {
       return 'Bring a 🧥 just in case';
     }
   }
+
+  String getName() => this.name;
 }

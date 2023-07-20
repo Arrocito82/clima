@@ -2,8 +2,14 @@ import 'package:clima/utilities/constants.dart';
 import 'package:flutter/material.dart';
 
 class LocationScreen extends StatefulWidget {
+  const LocationScreen(
+      {super.key,
+      required this.temp,
+      required this.description,
+      required this.icon});
   @override
   _LocationScreenState createState() => _LocationScreenState();
+  final String temp, icon, description;
 }
 
 class _LocationScreenState extends State<LocationScreen> {
@@ -49,11 +55,11 @@ class _LocationScreenState extends State<LocationScreen> {
                 child: Row(
                   children: <Widget>[
                     Text(
-                      '32°',
+                      '${widget.temp}°',
                       style: kTempTextStyle,
                     ),
                     Text(
-                      '☀️',
+                      '${widget.icon}',
                       style: kConditionTextStyle,
                     ),
                   ],
@@ -62,7 +68,7 @@ class _LocationScreenState extends State<LocationScreen> {
               Padding(
                 padding: EdgeInsets.only(right: 15.0),
                 child: Text(
-                  "It's 🍦 time in San Francisco!",
+                  "${widget.description}",
                   textAlign: TextAlign.right,
                   style: kMessageTextStyle,
                 ),
