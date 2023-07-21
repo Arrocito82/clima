@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import '../services/location.dart';
 import '../services/networking.dart';
 
@@ -19,18 +21,22 @@ class Weather {
 
   factory Weather.fromJson(Map<String, dynamic> json) {
     return Weather(
-      name: json['name'],
-      temperature: json['main']['temp'],
-      condition: json['weather'][0]['id'],
-    );
+        name: json['name'],
+        temperature: json['main']['temp'],
+        condition: json['weather'][0]['id']);
   }
-  static Future<Weather> getLocationWeather() async {
+  static Future<Weather?> getLocationWeather() async {
+    // try {
     await location.getCurrentLocation();
     dynamic weatherData = await NetworkHelper.fetch(
-        url:
-            '$kWeatherURL?lat=${location.latitude}&lon=${location.longitude}&appid=$kAppId&units=metric');
-    Weather weather = Weather.fromJson(weatherData);
-    return weather;
+            url:
+                '$kWeatherURL?lat=${location.latitude}&lon=${location.longitude}&appid=$kAppId&units=metric')
+        .timeout(const Duration(seconds: 5));
+
+    return Weather.fromJson(weatherData);
+    // } catch (e) {
+    //   throw e;
+    // }
   }
 
   String getTemperature() => _temperature.toStringAsFixed(1);

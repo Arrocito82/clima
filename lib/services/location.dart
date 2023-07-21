@@ -5,11 +5,11 @@ class Location {
 
   Future<void> getCurrentLocation() async {
     Position position;
-    try {
+    // try {
       position = await _determinePosition();
-    } catch (e) {
-      return;
-    }
+    // } catch (e) {
+    //   throw e;
+    // }
     longitude = position.longitude;
     latitude = position.latitude;
   }

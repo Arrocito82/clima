@@ -11,7 +11,7 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
-  late Weather weather;
+  late Weather? weather;
 
   void showWeather() {
     Navigator.push(
@@ -22,7 +22,18 @@ class _LoadingScreenState extends State<LoadingScreen> {
   }
 
   void getLocationWeather() async {
-    weather = await Weather.getLocationWeather();
+    try {
+      weather = await Weather.getLocationWeather();
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('$e'),
+        action: SnackBarAction(
+            label: 'Ok',
+            onPressed: () =>
+                ScaffoldMessenger.of(context).hideCurrentSnackBar()),
+      ));
+      weather = null;
+    }
     showWeather();
   }
 
@@ -36,10 +47,11 @@ class _LoadingScreenState extends State<LoadingScreen> {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: Center(
-          child: SpinKitRotatingPlain(
-        color: Colors.white,
-        size: 50.0,
-      )),
+        child: SpinKitRotatingPlain(
+          color: Colors.white,
+          size: 50.0,
+        ),
+      ),
     );
   }
 }
