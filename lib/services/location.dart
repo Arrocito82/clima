@@ -8,17 +8,7 @@ class Location {
     try {
       position = await _determinePosition();
     } catch (e) {
-      print(e);
-      position = Position(
-        longitude: -88.9053,
-        latitude: 13.8030,
-        timestamp: DateTime.now(),
-        accuracy: 500,
-        altitude: 0,
-        heading: 0,
-        speed: 0,
-        speedAccuracy: 0,
-      );
+      return;
     }
     longitude = position.longitude;
     latitude = position.latitude;

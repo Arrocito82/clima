@@ -5,17 +5,22 @@ class Weather {
   static const kAppId = 'ab0550e03a70ca808a6c5df74e22b7b1';
   static const kWeatherURL = 'https://api.openweathermap.org/data/2.5/weather';
   static Location location = Location();
-  final int condition;
-  final double temp;
-  final String name;
+  final int _condition;
+  final double _temperature;
+  final String _locationName;
 
   const Weather(
-      {required this.condition, required this.temp, required this.name});
+      {required int condition,
+      required double temperature,
+      required String name})
+      : _locationName = name,
+        _temperature = temperature,
+        _condition = condition;
 
   factory Weather.fromJson(Map<String, dynamic> json) {
     return Weather(
       name: json['name'],
-      temp: json['main']['temp'],
+      temperature: json['main']['temp'],
       condition: json['weather'][0]['id'],
     );
   }
@@ -28,21 +33,21 @@ class Weather {
     return weather;
   }
 
-  String getTemperature() => temp.toStringAsFixed(1);
+  String getTemperature() => _temperature.toStringAsFixed(1);
   String getWeatherIcon() {
-    if (condition < 300) {
+    if (_condition < 300) {
       return '🌩';
-    } else if (condition < 400) {
+    } else if (_condition < 400) {
       return '🌧';
-    } else if (condition < 600) {
+    } else if (_condition < 600) {
       return '☔️';
-    } else if (condition < 700) {
+    } else if (_condition < 700) {
       return '☃️';
-    } else if (condition < 800) {
+    } else if (_condition < 800) {
       return '🌫';
-    } else if (condition == 800) {
+    } else if (_condition == 800) {
       return '☀️';
-    } else if (condition <= 804) {
+    } else if (_condition <= 804) {
       return '☁️';
     } else {
       return '🤷‍';
@@ -50,14 +55,14 @@ class Weather {
   }
 
   String getMessage() {
-    if (temp > 25) {
-      return 'It\'s 🍦 time in $name';
-    } else if (temp > 20) {
-      return 'Time for shorts and 👕 in $name';
-    } else if (temp < 10) {
-      return 'You\'ll need 🧣 and 🧤 in $name';
+    if (_temperature > 25) {
+      return 'It\'s 🍦 time in $_locationName';
+    } else if (_temperature > 20) {
+      return 'Time for shorts and 👕 in $_locationName';
+    } else if (_temperature < 10) {
+      return 'You\'ll need 🧣 and 🧤 in $_locationName';
     } else {
-      return 'Bring a 🧥 just in case in $name';
+      return 'Bring a 🧥 just in case in $_locationName';
     }
   }
 }

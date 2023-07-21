@@ -17,13 +17,11 @@ class _LoadingScreenState extends State<LoadingScreen> {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (BuildContext buildContext) => LocationScreen(
-                temp: weather.getTemperature(),
-                description: weather.getMessage(),
-                icon: weather.getWeatherIcon())));
+            builder: (BuildContext buildContext) =>
+                LocationScreen(weather: weather)));
   }
 
-  void getLocation() async {
+  void getLocationWeather() async {
     weather = await Weather.getLocationWeather();
     showWeather();
   }
@@ -31,7 +29,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   @override
   void initState() {
     super.initState();
-    getLocation();
+    getLocationWeather();
   }
 
   @override

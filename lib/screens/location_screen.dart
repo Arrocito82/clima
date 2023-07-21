@@ -1,18 +1,30 @@
+import 'package:clima/services/weather.dart';
 import 'package:clima/utilities/constants.dart';
 import 'package:flutter/material.dart';
 
 class LocationScreen extends StatefulWidget {
-  const LocationScreen(
-      {super.key,
-      required this.temp,
-      required this.description,
-      required this.icon});
+  LocationScreen({super.key, required this.weather});
   @override
   _LocationScreenState createState() => _LocationScreenState();
-  final String temp, icon, description;
+  Weather weather;
 }
 
 class _LocationScreenState extends State<LocationScreen> {
+  late String description, temperature, icon;
+  @override
+  void initState() {
+    super.initState();
+    updateWeather(widget.weather);
+  }
+
+  void updateWeather(Weather weather) {
+    setState(() {
+      description = weather.getMessage();
+      temperature = weather.getTemperature();
+      icon = weather.getWeatherIcon();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,10 +47,15 @@ class _LocationScreenState extends State<LocationScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      setState(() async {
+                        updateWeather(await Weather.getLocationWeather());
+                      });
+                    },
                     child: Icon(
                       Icons.near_me,
                       size: 50.0,
+                      color: Colors.white,
                     ),
                   ),
                   TextButton(
@@ -55,11 +72,11 @@ class _LocationScreenState extends State<LocationScreen> {
                 child: Row(
                   children: <Widget>[
                     Text(
-                      '${widget.temp}°',
+                      '${temperature}°',
                       style: kTempTextStyle,
                     ),
                     Text(
-                      '${widget.icon}',
+                      '${icon}',
                       style: kConditionTextStyle,
                     ),
                   ],
@@ -68,7 +85,7 @@ class _LocationScreenState extends State<LocationScreen> {
               Padding(
                 padding: EdgeInsets.only(right: 15.0),
                 child: Text(
-                  "${widget.description}",
+                  "${description}",
                   textAlign: TextAlign.right,
                   style: kMessageTextStyle,
                 ),
