@@ -2,6 +2,8 @@ import 'package:clima/services/weather.dart';
 import 'package:clima/utilities/constants.dart';
 import 'package:flutter/material.dart';
 
+import 'city_screen.dart';
+
 class LocationScreen extends StatefulWidget {
   const LocationScreen({super.key, required this.weather});
   @override
@@ -78,10 +80,13 @@ class _LocationScreenState extends State<LocationScreen> {
                     ),
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (buildContext)=>CityScreen()));
+                    },
                     child: const Icon(
                       Icons.location_city,
                       size: 50.0,
+                      color: Colors.white,
                     ),
                   ),
                 ],
