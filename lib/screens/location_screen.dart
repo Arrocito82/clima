@@ -49,72 +49,99 @@ class _LocationScreenState extends State<LocationScreen> {
         ),
         constraints: const BoxConstraints.expand(),
         child: SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  TextButton(
-                    onPressed: () async {
-                      Weather? updatedWeather;
-                      try {
-                        updatedWeather = await Weather.getLocationWeather();
-                      } catch (e) {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text('$e'),
-                          action: SnackBarAction(
-                              label: 'Ok',
-                              onPressed: () => ScaffoldMessenger.of(context)
-                                  .hideCurrentSnackBar()),
-                        ));
-                        updatedWeather = null;
-                      }
-                      updateWeather(updatedWeather);
-                    },
-                    child: const Icon(
-                      Icons.near_me,
-                      size: 50.0,
-                      color: Colors.white,
-                    ),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Expanded(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      TextButton(
+                        onPressed: () async {
+                          Weather? updatedWeather;
+                          try {
+                            updatedWeather = await Weather.getLocationWeather();
+                          } catch (e) {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text('$e'),
+                              action: SnackBarAction(
+                                  label: 'Ok',
+                                  onPressed: () => ScaffoldMessenger.of(context)
+                                      .hideCurrentSnackBar()),
+                            ));
+                            updatedWeather = null;
+                          }
+                          updateWeather(updatedWeather);
+                        },
+                        child: const Icon(
+                          Icons.near_me,
+                          size: 50.0,
+                          color: Colors.white,
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () async {
+                          Weather? updatedWeather;
+                          String? searchedCity = await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (buildContext) => CityScreen()));
+                          if (searchedCity != null) {
+                            try {
+                              updatedWeather =
+                                  await Weather.getCityWeather(searchedCity);
+                            } catch (e) {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                content: Text('$e'),
+                                action: SnackBarAction(
+                                    label: 'Ok',
+                                    onPressed: () =>
+                                        ScaffoldMessenger.of(context)
+                                            .hideCurrentSnackBar()),
+                              ));
+                              updatedWeather = null;
+                            }
+                            updateWeather(updatedWeather);
+                          }
+                        },
+                        child: const Icon(
+                          Icons.location_city,
+                          size: 50.0,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
                   ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (buildContext)=>CityScreen()));
-                    },
-                    child: const Icon(
-                      Icons.location_city,
-                      size: 50.0,
-                      color: Colors.white,
-                    ),
+                ),
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Text(
+                        temperature,
+                        style: kTempTextStyle,
+                      ),
+                      Text(
+                        icon,
+                        style: kConditionTextStyle,
+                      ),
+                    ],
                   ),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 15.0),
-                child: Row(
-                  children: <Widget>[
-                    Text(
-                      temperature,
-                      style: kTempTextStyle,
-                    ),
-                    Text(
-                      icon,
-                      style: kConditionTextStyle,
-                    ),
-                  ],
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(right: 15.0, bottom: 38),
-                child: Text(
-                  description,
-                  textAlign: TextAlign.right,
-                  style: kMessageTextStyle,
+                Expanded(
+                  child: Text(
+                    description,
+                    textAlign: TextAlign.right,
+                    style: kMessageTextStyle,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

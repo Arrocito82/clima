@@ -28,15 +28,20 @@ class Weather {
   static Future<Weather?> getLocationWeather() async {
     // try {
     await location.getCurrentLocation();
-    dynamic weatherData = await NetworkHelper.fetch(
-            url:
-                '$kWeatherURL?lat=${location.latitude}&lon=${location.longitude}&appid=$kAppId&units=metric')
-        .timeout(const Duration(seconds: 5));
-
+    String url =
+        '$kWeatherURL?lat=${location.latitude}&lon=${location.longitude}&appid=$kAppId&units=metric';
+    dynamic weatherData =
+        await NetworkHelper.fetch(url: url).timeout(const Duration(seconds: 5));
     return Weather.fromJson(weatherData);
-    // } catch (e) {
-    //   throw e;
-    // }
+  }
+
+  static Future<Weather?> getCityWeather(String city) async {
+    // try {
+    String url = '$kWeatherURL?q=$city&appid=$kAppId&units=metric';
+    print(url);
+    dynamic weatherData =
+        await NetworkHelper.fetch(url: url).timeout(const Duration(seconds: 5));
+    return Weather.fromJson(weatherData);
   }
 
   String getTemperature() => _temperature.toStringAsFixed(1);
