@@ -26,7 +26,6 @@ class Weather {
         condition: json['weather'][0]['id']);
   }
   static Future<Weather?> getLocationWeather() async {
-    // try {
     await location.getCurrentLocation();
     String url =
         '$kWeatherURL?lat=${location.latitude}&lon=${location.longitude}&appid=$kAppId&units=metric';
@@ -36,9 +35,7 @@ class Weather {
   }
 
   static Future<Weather?> getCityWeather(String city) async {
-    // try {
     String url = '$kWeatherURL?q=$city&appid=$kAppId&units=metric';
-    print(url);
     dynamic weatherData =
         await NetworkHelper.fetch(url: url).timeout(const Duration(seconds: 5));
     return Weather.fromJson(weatherData);

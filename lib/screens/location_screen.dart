@@ -66,13 +66,6 @@ class _LocationScreenState extends State<LocationScreen> {
                           try {
                             updatedWeather = await Weather.getLocationWeather();
                           } catch (e) {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text('$e'),
-                              action: SnackBarAction(
-                                  label: 'Ok',
-                                  onPressed: () => ScaffoldMessenger.of(context)
-                                      .hideCurrentSnackBar()),
-                            ));
                             updatedWeather = null;
                           }
                           updateWeather(updatedWeather);
@@ -94,19 +87,10 @@ class _LocationScreenState extends State<LocationScreen> {
                             try {
                               updatedWeather =
                                   await Weather.getCityWeather(searchedCity);
+                              updateWeather(updatedWeather);
                             } catch (e) {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(
-                                content: Text('$e'),
-                                action: SnackBarAction(
-                                    label: 'Ok',
-                                    onPressed: () =>
-                                        ScaffoldMessenger.of(context)
-                                            .hideCurrentSnackBar()),
-                              ));
                               updatedWeather = null;
                             }
-                            updateWeather(updatedWeather);
                           }
                         },
                         child: const Icon(

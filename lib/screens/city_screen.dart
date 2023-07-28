@@ -40,6 +40,33 @@ class _CityScreenState extends State<CityScreen> {
                 Container(
                   padding: EdgeInsets.all(20.0),
                   child: TextField(
+                    autocorrect: true,
+                    decoration: InputDecoration(
+                      hintText: "City Name",
+                      hintStyle: TextStyle(
+                        color: Colors.grey.shade700,
+                        letterSpacing: 2.5,
+                      ),
+                      filled: true,
+                      fillColor: Colors.white70,
+                      focusColor: Colors.white70,
+                      icon: Icon(Icons.location_city),
+                      iconColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(15),
+                        ),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                    cursorHeight: 25,
+                    cursorColor: Colors.teal,
+                    cursorWidth: 5,
+                    style: TextStyle(
+                      color: Colors.black87,
+                      letterSpacing: 2.5,
+                      fontSize: 20,
+                    ),
                     onChanged: (String searchedCity) {
                       city = searchedCity;
                     },

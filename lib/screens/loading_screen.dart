@@ -25,13 +25,6 @@ class _LoadingScreenState extends State<LoadingScreen> {
     try {
       weather = await Weather.getLocationWeather();
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('$e'),
-        action: SnackBarAction(
-            label: 'Ok',
-            onPressed: () =>
-                ScaffoldMessenger.of(context).hideCurrentSnackBar()),
-      ));
       weather = null;
     }
     showWeather();
